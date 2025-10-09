@@ -1,9 +1,30 @@
 const mongoose = require('mongoose');
 
+const SpecificationSchema = new mongoose.Schema(
+  {
+    key: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    value: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  specification: {
+    type: [SpecificationSchema],
+    required: true,
+    default: [],
   },
   description: {
     type: String,
@@ -18,23 +39,31 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
     required: true,
   },
   brand: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Brand',
+    required: true,
+  },
+  seri: {
     type: String,
     required: true,
   },
-  type: {
+  condition: {
     type: String,
     required: true,
   },
-  imageUrl: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
+  coverImage: {
+    type: String,
+    required: true,
+  },
+  images: {
+    type: [String],
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Product', productSchema);

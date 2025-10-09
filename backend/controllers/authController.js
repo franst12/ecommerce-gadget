@@ -14,8 +14,6 @@ const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    console.log(user);
-
     const newUser = await user.save();
     res.status(201).json({
       message: 'Berhasil menambahkan admin',
@@ -33,19 +31,44 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
-    if (!user) return res.status(400).json({ message: 'Pengguna tidak ditemukan' });
+    if (!user)
+      return res.status(400).json({
+        message: 'Pengguna tidak ditemukan',
+        success: false,
+      });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Password salah' });
+    if (!isMatch)
+      return res.status(400).json({
+        message: 'Password salah',
+        success: false,
+      });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, message: 'Login berhasil' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: 'Gagal login',
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    res.json({ message: 'Logout berhasil' });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Gagal logout',
+      success: false,
+      error: err.message,
+    });
   }
 };
 
 module.exports = {
   login,
+  logout,
   register,
 };
