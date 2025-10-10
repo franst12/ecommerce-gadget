@@ -6,26 +6,7 @@ const connectToDatabase = require('./utils/db');
 
 const app = express();
 
-// Middleware
-const allowedOrigins = process.env.SERVER_ORIGIN.split(',');
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) {
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Origin ${origin} tidak diizinkan oleh CORS`));
-    }
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
