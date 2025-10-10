@@ -3,14 +3,12 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 
-// 1. Konfigurasi Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// 2. Konfigurasi Storage untuk Multer
 const fileName = 'jpeg' || file.mimetype === 'png' || file.mimetype === 'jpg';
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
@@ -21,7 +19,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-// 3. Buat Upload Middleware
 const uploadCloudinary = multer({ storage: storage });
 
 module.exports = uploadCloudinary;
