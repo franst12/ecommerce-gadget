@@ -7,9 +7,7 @@ const connectToDatabase = require('./utils/db');
 const app = express();
 
 // Middleware
-const allowedOrigins = {
-  origin: process.env.SERVER_ORIGIN,
-};
+const allowedOrigins = process.env.SERVER_ORIGIN.split(',');
 
 const corsOptions = {
   origin: (origin, callback) => {
