@@ -8,11 +8,10 @@ const db = require('./utils/db');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: process.env.SERVER_ORIGIN,
+  origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
