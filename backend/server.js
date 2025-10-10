@@ -45,7 +45,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
-  res.status(500).json({
+  return res.status(500).json({
     message: 'Halaman tidak ditemukan',
     success: false,
   });
