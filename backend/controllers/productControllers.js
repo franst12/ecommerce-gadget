@@ -1,9 +1,11 @@
 const Brands = require('../models/Brands');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const connectToDatabase = require('../utils/db');
 
 const getAllProducts = async (req, res) => {
   try {
+    await connectToDatabase();
     const products = await Product.find().populate('category', 'name').populate('brand', 'name');
     const productFormat = products.map((product) => {
       return {
@@ -159,6 +161,7 @@ const getProductByBrand = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
+    await connectToDatabase();
     const id = req.params.id;
     const product = await Product.findById(id).populate('category', 'name').populate('brand', 'name');
     res.status(200).json({
