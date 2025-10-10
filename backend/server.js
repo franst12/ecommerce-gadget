@@ -10,27 +10,27 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// const allowedOrigins = {
-//   origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
-// };
+const allowedOrigins = {
+  origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
+};
 
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     if (!origin) {
-//       return callback(null, true);
-//     }
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
 
-//     if (allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error(`Origin ${origin} tidak diizinkan oleh CORS`));
-//     }
-//   },
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   credentials: true,
-// };
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origin ${origin} tidak diizinkan oleh CORS`));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
