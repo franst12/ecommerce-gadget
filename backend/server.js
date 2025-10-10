@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 const allowedOrigins = {
-  origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
+  origin: process.env.SERVER_ORIGIN,
 };
 
 const corsOptions = {
