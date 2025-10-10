@@ -10,10 +10,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-const corsOptions = {
-  origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: process.env.SERVER_ORIGIN ? process.env.SERVER_ORIGIN.split(',') : [],
+// };
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
