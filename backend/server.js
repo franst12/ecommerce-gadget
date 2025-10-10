@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
-const db = require('./utils/db');
+const connectToDatabase = require('./utils/db');
 
 dotenv.config();
 
@@ -34,11 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-db.then(() => {
-  console.log('Databse terhubung');
-}).catch((err) => {
-  console.log('Gagal terhubung ke database', err);
-});
+connectToDatabase();
 
 // Rute API
 app.use('/api/products', productRoutes);

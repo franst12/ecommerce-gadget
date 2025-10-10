@@ -1,14 +1,38 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 
-dotenv.config();
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
-const db = mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('Database connected'))
-  .catch((err) => console.log(err));
+async function connectToDatabase() {
+  if (cached.conn) {
+    console.log('Menggunakan koneksi database yang tersimpan.');
+    return cached.conn;
+  }
 
-module.exports = db;
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+    };
+
+    cached.promise = mongoose
+      .connect(process.env.MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log('Database terhubung.');
+        return mongoose;
+      })
+      .catch((error) => {
+        console.error('Gagal terhubung ke database:', error.message);
+        cached.promise = null;
+        throw error;
+      });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+module.exports = connectToDatabase;
